@@ -3,7 +3,7 @@
 ipset -N russia hash:net
 
 # Remove if existing zone downloaded
-rm -f ru-aggregated.zone
+rm -f ./ru-aggregated.zone
 
 # Pull the latest IP set for Russia
 wget -P . http://www.ipdeny.com/ipblocks/data/aggregated/ru-aggregated.zone
