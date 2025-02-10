@@ -4,7 +4,7 @@
 ipset -N china hash:net
 
 # Remove any old list that might exist from previous runs of this script
-rm -f cn-aggregated.zone
+rm -f ./cn-aggregated.zone
 
 # Pull the latest IP set for China
 wget -P . https://www.ipdeny.com/ipblocks/data/aggregated/cn-aggregated.zone
