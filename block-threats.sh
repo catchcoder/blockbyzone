@@ -1,4 +1,4 @@
-#!/bin/bash
+o #!/bin/bash
 
 # Check if the script is running with sudo
 if [[ $EUID -ne 0 ]]; then
@@ -28,6 +28,7 @@ while IFS= read -r line; do
     # Ignore commented lines and blank lines
     if [[ ! $line =~ ^# ]] && [[ -n $line ]]; then
         # Execute the action with the line
+        echo "ipset -A %blockgroupname% $i $line"
         ipset -A %blockgroupname% $i "$line"
     fi
 done < "./data.tmp"
