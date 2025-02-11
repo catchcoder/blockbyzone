@@ -8,7 +8,7 @@ fi
 
 # Cleanup
 removedldfile() {
-    # Remove if file exist
+    # Remove if file exists
     rm -f ./cn-aggregated.zone
 }
 
