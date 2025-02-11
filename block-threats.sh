@@ -6,36 +6,34 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-# Cleanup
-removedldfile() {
-    # Remove if file exists
-    rm -f ./emerging-Block-IPs.txt
+# Remove if file exists
+removetmpfile() {
+    rm -f ./data.tmp
 }
 
-removedldfile
+blockgroupname="emergetreats"
+file_url="https://rules.emergingthreats.net/fwrules/emerging-Block-IPs.txt"
+
+# Cleanup
+removetmpfile
 
 # Create the ipset list
-ipset -N emergetreats hash:net
+ipset -N %blockgroupnam% hash:net
 
-# Pull the latest IP set for Emerging Threats Spamhaus DROP List rules.
-wget -P . https://rules.emergingthreats.net/fwrules/emerging-Block-IPs.txt
+# Download the file using curl and rename it to data.tmp
+curl -o data.tmp "$file_url"
 
-# Define the file to read
-input_file="emerging-Block-IPs.txt"
-
-# Read each line and add the IP address from the downloaded list into the ipset 'emergetreats'
+# Read each line and add the IP address from the downloaded list into the ipset '%blockgroupnam%'
 while IFS= read -r line; do
     # Ignore commented lines and blank lines
     if [[ ! $line =~ ^# ]] && [[ -n $line ]]; then
         # Execute the action with the line
-        ipset -A emergetreats $i "$line"
+        ipset -A %blockgroupnam% $i "$line"
     fi
-done < "$input_file"
+done < "$data.tmp"
 
-removedldfile
-
-# Remove if existing zone downloaded
-rm -f ./emerging-Block-IPs.txt
+#Cleanup
+removetmpfile
 
 #Check if persistent IPTBALES is installed
 COMMAND="netfilter-persistent"
@@ -44,4 +42,5 @@ if which "$COMMAND" > /dev/null 2>&1; then
     sudo netfilter-persistent save
 else
     echo "iptables-persistent needs to be installed available."
+    echo "sudo apt install iptables-persistent"
 fi
