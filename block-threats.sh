@@ -18,7 +18,7 @@ file_url="https://rules.emergingthreats.net/fwrules/emerging-Block-IPs.txt"
 removetmpfile
 
 # Create the ipset list
-ipset -N %blockgroupnam% hash:net
+ipset -N $blockgroupname hash:net
 
 # Download the file using curl and rename it to data.tmp
 curl -o data.tmp "$file_url"
@@ -30,7 +30,7 @@ while IFS= read -r line; do
         # Execute the action with the line
         ipset -A $blockgroupname $i "$line"
     fi
-done < "./data.tmp"
+done < "data.tmp"
 
 #Cleanup
 removetmpfile
