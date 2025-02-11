@@ -11,13 +11,15 @@ removetmpfile() {
     rm -f ./data.tmp
 }
 
-blockgroupname="emergetreats"
+blockgroupname="emergethreats"
 file_url="https://rules.emergingthreats.net/fwrules/emerging-Block-IPs.txt"
 
 # Cleanup
 removetmpfile
 
 # Create the ipset list
+# ipset destroy $blockgroupname
+# ipset list $blockgroupname
 ipset -N $blockgroupname hash:net
 
 # Download the IPs list and store as data.tmp
