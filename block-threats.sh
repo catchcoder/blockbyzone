@@ -30,7 +30,7 @@ while IFS= read -r line; do
         # Execute the action with the line
         ipset -A %blockgroupname% $i "$line"
     fi
-done < "$data.tmp"
+done < "./data.tmp"
 
 #Cleanup
 removetmpfile
