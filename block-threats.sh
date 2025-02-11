@@ -21,6 +21,9 @@ while IFS= read -r line; do
     fi
 done < "$input_file"
 
+# Remove if existing zone downloaded
+rm -f ./emerging-Block-IPs.txt
+
 #Check if persistent IPTBALES is installed
 COMMAND="netfilter-persistent"
 
