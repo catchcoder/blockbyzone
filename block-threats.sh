@@ -6,12 +6,11 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-# Function to remove the temporary file if it exists
+# Remove the temporary file if it exists
 removetmpfile() {
     rm -f ./data.tmp
 }
 
-#Editable variables
 blockgroupname="emergetreats"
 file_url="https://rules.emergingthreats.net/fwrules/emerging-Block-IPs.txt"
 
@@ -21,8 +20,8 @@ removetmpfile
 # Create the ipset list
 ipset -N $blockgroupname hash:net
 
-# Download the file using curl and rename it to data.tmp
-curl -o data.tmp "$file_url"
+# Download the IPs list and store as data.tmp
+wget -O data.tmp "$file_url"
 
 # Read each line and add the IP address from the downloaded list into the ipset '$blockgroupname'
 while IFS= read -r line; do
