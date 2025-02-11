@@ -1,4 +1,4 @@
-o #!/bin/bash
+#!/bin/bash
 
 # Check if the script is running with sudo
 if [[ $EUID -ne 0 ]]; then
@@ -6,11 +6,12 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-# Remove if file exists
+# Function to remove the temporary file if it exists
 removetmpfile() {
     rm -f ./data.tmp
 }
 
+#Editable variables
 blockgroupname="emergetreats"
 file_url="https://rules.emergingthreats.net/fwrules/emerging-Block-IPs.txt"
 
@@ -21,26 +22,26 @@ removetmpfile
 ipset -N $blockgroupname hash:net
 
 # Download the file using curl and rename it to data.tmp
-wget -O data.tmp "$file_url"
+curl -o data.tmp "$file_url"
 
 # Read each line and add the IP address from the downloaded list into the ipset '$blockgroupname'
 while IFS= read -r line; do
     # Ignore commented lines and blank lines
     if [[ ! $line =~ ^# ]] && [[ -n $line ]]; then
         # Execute the action with the line
-        ipset -A $blockgroupname $i "$line"
+        ipset -A $blockgroupname "$line"
     fi
 done < "data.tmp"
 
-#Cleanup
+# Cleanup
 removetmpfile
 
-#Check if persistent IPTBALES is installed
+# Check if persistent IPTABLES is installed
 COMMAND="netfilter-persistent"
 
 if which "$COMMAND" > /dev/null 2>&1; then
     sudo netfilter-persistent save
 else
-    echo "iptables-persistent needs to be installed available."
+    echo "iptables-persistent needs to be installed."
     echo "sudo apt install iptables-persistent"
 fi
