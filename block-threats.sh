@@ -23,13 +23,12 @@ ipset -N %blockgroupnam% hash:net
 # Download the file using curl and rename it to data.tmp
 curl -o data.tmp "$file_url"
 
-# Read each line and add the IP address from the downloaded list into the ipset '%blockgroupname%'
+# Read each line and add the IP address from the downloaded list into the ipset '$blockgroupname'
 while IFS= read -r line; do
     # Ignore commented lines and blank lines
     if [[ ! $line =~ ^# ]] && [[ -n $line ]]; then
         # Execute the action with the line
-        echo "ipset -A %blockgroupname% $i $line"
-        ipset -A %blockgroupname% $i "$line"
+        ipset -A $blockgroupname $i "$line"
     fi
 done < "./data.tmp"
 
