@@ -21,7 +21,7 @@ removetmpfile
 ipset -N $blockgroupname hash:net
 
 # Download the file using curl and rename it to data.tmp
-curl -o data.tmp "$file_url"
+wget -O data.tmp "$file_url"
 
 # Read each line and add the IP address from the downloaded list into the ipset '$blockgroupname'
 while IFS= read -r line; do
