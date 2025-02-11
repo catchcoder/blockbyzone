@@ -6,11 +6,16 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
+# Cleanup
+removedldfile() {
+    # Remove if file exists
+    rm -f ./emerging-Block-IPs.txt
+}
+
+removedldfile
+
 # Create the ipset list
 ipset -N emergetreats hash:net
-
-# Remove if existing zone downloaded
-rm -f ./emerging-Block-IPs.txt
 
 # Pull the latest IP set for Emerging Threats Spamhaus DROP List rules.
 wget -P . https://rules.emergingthreats.net/fwrules/emerging-Block-IPs.txt
@@ -26,6 +31,8 @@ while IFS= read -r line; do
         ipset -A emergetreats $i "$line"
     fi
 done < "$input_file"
+
+removedldfile
 
 # Remove if existing zone downloaded
 rm -f ./emerging-Block-IPs.txt
